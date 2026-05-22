@@ -51,9 +51,6 @@ function contarContatos(
     return $resultado['total'];
 }
 
-/**
- * Renderiza tabela HTML
- */
 function exibirTabelaContatos(array $contatos): void {
 
     if (empty($contatos)) {
