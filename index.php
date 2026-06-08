@@ -4,47 +4,25 @@ $pdo = require 'config/database.php';
 
 require 'models/ContatoModel.php';
 
-$pagina = $_GET['pagina'] ?? 'lista';
-
-if (
-    $pagina === 'form'
-    &&
-    $_SERVER['REQUEST_METHOD'] === 'POST'
-) {
-
-    ContatoModel::create($pdo, [
-
-        'nome' => $_POST['nome'],
-
-        'email' => $_POST['email'],
-
-        'telefone' => $_POST['telefone']
-
-    ]);
-
-    header('Location: index.php');
-
-    exit;
-}
+$pagina = $_GET['pagina'] ?? 'contatos';
 
 include 'views/cabecalho.php';
 
 switch ($pagina) {
 
-    case 'form':
-
-        include
-            'views/contatos/form.php';
-
+    case 'clientes':
+        include 'clientes.php';
         break;
 
+    case 'produtos':
+        include 'produtos.php';
+        break;
+
+    case 'contatos':
     default:
-
-        $contatos =
-            ContatoModel::findAll($pdo);
-
-        include
-            'views/contatos/lista.php';
+        $contatos = ContatoModel::findAll($pdo);
+        include 'views/contatos/lista.php';
+        break;
 }
 ?>
 

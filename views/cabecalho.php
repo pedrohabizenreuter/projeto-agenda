@@ -252,11 +252,9 @@ body.dark .btn-voltar:hover {
 
     <div class="menu-links">
 
-        <a href="index.php">Contatos</a>
-
-        <a href="clientes.php">Clientes</a>
-
-        <a href="produtos.php">Produtos</a>
+    <a href="index.php?pagina=contatos">Contatos</a>
+    <a href="index.php?pagina=clientes">Clientes</a>
+    <a href="index.php?pagina=produtos">Produtos</a>
 
     </div>
 

@@ -1,7 +1,7 @@
 <h2>Contatos</h2>
 
 <a href="?pagina=form" class="btn-novo">
-    + Novo Contato
+     Novo Contato
 </a>
 
 <br><br>
