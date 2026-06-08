@@ -1,6 +1,6 @@
 <?php
 require_once "config.php";
-include "views/cabecalho.php";
+
 include_once "funcoes_clientes.php";
 
 $clientes = obterClientes($pdo);
