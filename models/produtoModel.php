@@ -1,11 +1,11 @@
 <?php
 
-class ContatoModel
+class ProdutoModel
 {
     public static function findAll(PDO $pdo)
     {
         $stmt = $pdo->query(
-            "SELECT * FROM contatos ORDER BY nome"
+            "SELECT * FROM produtos ORDER BY nome"
         );
 
         return $stmt->fetchAll();
@@ -14,7 +14,7 @@ class ContatoModel
     public static function find(PDO $pdo, int $id)
     {
         $stmt = $pdo->prepare(
-            "SELECT * FROM contatos WHERE id = ?"
+            "SELECT * FROM produtos WHERE id = ?"
         );
 
         $stmt->execute([$id]);
@@ -27,15 +27,17 @@ class ContatoModel
         array $dados
     ) {
         $stmt = $pdo->prepare(
-            "INSERT INTO contatos
-            (nome, email, telefone)
-            VALUES (?, ?, ?)"
+            "INSERT INTO produtos
+            (nome, descricao, preco, estoque, imagem)
+            VALUES (?, ?, ?, ?, ?)"
         );
 
         return $stmt->execute([
             $dados['nome'],
-            $dados['email'],
-            $dados['telefone']
+            $dados['descricao'],
+            $dados['preco'],
+            $dados['estoque'],
+            $dados['imagem']
         ]);
     }
 
@@ -45,17 +47,21 @@ class ContatoModel
         array $dados
     ) {
         $stmt = $pdo->prepare(
-            "UPDATE contatos
+            "UPDATE produtos
              SET nome = ?,
-                 email = ?,
-                 telefone = ?
+                 descricao = ?,
+                 preco = ?,
+                 estoque = ?,
+                 imagem = ?
              WHERE id = ?"
         );
 
         return $stmt->execute([
             $dados['nome'],
-            $dados['email'],
-            $dados['telefone'],
+            $dados['descricao'],
+            $dados['preco'],
+            $dados['estoque'],
+            $dados['imagem'],
             $id
         ]);
     }
@@ -65,7 +71,7 @@ class ContatoModel
         int $id
     ) {
         $stmt = $pdo->prepare(
-            "DELETE FROM contatos
+            "DELETE FROM produtos
              WHERE id = ?"
         );
 

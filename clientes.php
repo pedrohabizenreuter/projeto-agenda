@@ -1,10 +1,11 @@
 <?php
+
 require_once "config.php";
+require_once "models/ClienteModel.php";
 
-include_once "funcoes_clientes.php";
+$clientes = ClienteModel::findAll($pdo);
 
-$clientes = obterClientes($pdo);
-
+include "views/clientes/lista.php";
 echo '
 <a href="cadastro_cliente.php" class="btn-novo">
      Novo Cliente
@@ -12,7 +13,7 @@ echo '
 <br><br>
 ';
 
-exibirTabelaClientes($clientes);
+
 ?>
 
 </div>

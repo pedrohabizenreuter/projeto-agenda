@@ -1,62 +1,66 @@
-<h2>Contatos</h2>
-
-<a href="?pagina=form" class="btn-novo">
-     Novo Contato
+<a href="index.php?pagina=cadastro_contato" class="btn-novo">
+    Novo Contato
 </a>
 
 <br><br>
 
+<?php if (empty($contatos)): ?>
+
+    <p>Nenhum contato encontrado.</p>
+
+<?php else: ?>
+
 <table>
 
-<tr>
-    <th>#</th>
-    <th>Nome</th>
-    <th>E-mail</th>
-    <th>Telefone</th>
-    <th>Editar</th>
-    <th>Excluir</th>
-</tr>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Telefone</th>
+            <th>Editar</th>
+            <th>Excluir</th>
+        </tr>
+    </thead>
 
-<?php foreach ($contatos as $contato): ?>
+    <tbody>
 
-<tr>
+    <?php foreach ($contatos as $contato): ?>
 
-    <td>
-        <?= $contato['id'] ?>
-    </td>
+        <tr>
 
-    <td>
-        <?= $contato['nome'] ?>
-    </td>
+            <td><?= htmlspecialchars($contato['id']) ?></td>
 
-    <td>
-        <?= $contato['email'] ?>
-    </td>
+            <td><?= htmlspecialchars($contato['nome']) ?></td>
 
-    <td>
-        <?= $contato['telefone'] ?>
-    </td>
+            <td><?= htmlspecialchars($contato['email']) ?></td>
 
-    <td>
-        <a
-            class="btn-editar"
-            href="editar_contato.php?id=<?= $contato['id'] ?>"
-        >
-            Editar
-        </a>
-    </td>
+            <td><?= htmlspecialchars($contato['telefone']) ?></td>
 
-    <td>
-        <a
-            class="btn-excluir"
-            href="excluir_contato.php?id=<?= $contato['id'] ?>"
-        >
-            Excluir
-        </a>
-    </td>
+            <td>
+                <a
+                    class="btn-editar"
+                    href="index.php?pagina=editar_contato&id=<?= $contato['id'] ?>"
+                >
+                    Editar
+                </a>
+            </td>
 
-</tr>
+            <td>
+                <a
+                    class="btn-excluir"
+                    href="index.php?pagina=excluir_contato&id=<?= $contato['id'] ?>"
+                >
+                    Excluir
+                </a>
+            </td>
 
-<?php endforeach; ?>
+        </tr>
+
+    <?php endforeach; ?>
+
+    </tbody>
 
 </table>
+
+<?php endif; ?>

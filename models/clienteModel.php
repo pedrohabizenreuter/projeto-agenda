@@ -1,11 +1,11 @@
 <?php
 
-class ContatoModel
+class ClienteModel
 {
     public static function findAll(PDO $pdo)
     {
         $stmt = $pdo->query(
-            "SELECT * FROM contatos ORDER BY nome"
+            "SELECT * FROM clientes ORDER BY nome"
         );
 
         return $stmt->fetchAll();
@@ -14,7 +14,7 @@ class ContatoModel
     public static function find(PDO $pdo, int $id)
     {
         $stmt = $pdo->prepare(
-            "SELECT * FROM contatos WHERE id = ?"
+            "SELECT * FROM clientes WHERE id = ?"
         );
 
         $stmt->execute([$id]);
@@ -27,15 +27,17 @@ class ContatoModel
         array $dados
     ) {
         $stmt = $pdo->prepare(
-            "INSERT INTO contatos
-            (nome, email, telefone)
-            VALUES (?, ?, ?)"
+            "INSERT INTO clientes
+            (nome, cpf, email, telefone, endereco)
+            VALUES (?, ?, ?, ?, ?)"
         );
 
         return $stmt->execute([
             $dados['nome'],
+            $dados['cpf'],
             $dados['email'],
-            $dados['telefone']
+            $dados['telefone'],
+            $dados['endereco']
         ]);
     }
 
@@ -45,17 +47,21 @@ class ContatoModel
         array $dados
     ) {
         $stmt = $pdo->prepare(
-            "UPDATE contatos
+            "UPDATE clientes
              SET nome = ?,
+                 cpf = ?,
                  email = ?,
-                 telefone = ?
+                 telefone = ?,
+                 endereco = ?
              WHERE id = ?"
         );
 
         return $stmt->execute([
             $dados['nome'],
+            $dados['cpf'],
             $dados['email'],
             $dados['telefone'],
+            $dados['endereco'],
             $id
         ]);
     }
@@ -65,7 +71,7 @@ class ContatoModel
         int $id
     ) {
         $stmt = $pdo->prepare(
-            "DELETE FROM contatos
+            "DELETE FROM clientes
              WHERE id = ?"
         );
 

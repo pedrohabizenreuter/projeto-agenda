@@ -1,14 +1,5 @@
 <?php
 
-function obterProdutos(PDO $pdo): array {
-
-    $stmt = $pdo->query(
-        "SELECT * FROM produtos ORDER BY nome"
-    );
-
-    return $stmt->fetchAll();
-}
-
 function exibirTabelaProdutos(array $produtos): void {
 
     if (empty($produtos)) {

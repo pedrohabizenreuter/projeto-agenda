@@ -1,50 +1,29 @@
-<h2>Novo Contato</h2>
-
-<a href="index.php" class="btn-voltar">
-     Voltar
-</a>
-
 <div class="form-container">
+    <h2>Formulário de Contato</h2>
 
-<form method="POST">
+    <?php if (!empty($erro)): ?>
+        <p class="erro"><?= htmlspecialchars($erro) ?></p>
+    <?php endif; ?>
 
-    <div class="form-group">
+    <form method="POST" action="">
+        
+        <div class="form-group">
+            <label for="nome">Nome:</label>
+            <input type="text" name="nome" id="nome" value="<?= htmlspecialchars($contato['nome'] ?? '') ?>" required>
+        </div>
 
-        <label>Nome:</label>
+        <div class="form-group">
+            <label for="email">E-mail:</label>
+            <input type="email" name="email" id="email" value="<?= htmlspecialchars($contato['email'] ?? '') ?>" required>
+        </div>
 
-        <input
-            type="text"
-            name="nome"
-        >
+        <div class="form-group">
+            <label for="telefone">Telefone:</label>
+            <input type="text" name="telefone" id="telefone" value="<?= htmlspecialchars($contato['telefone'] ?? '') ?>" required>
+        </div>
 
-    </div>
+        <button type="submit" class="btn-cadastrar">Salvar Contato</button>
+        <a href="index.php?pagina=contatos" class="btn-voltar">Cancelar</a>
 
-    <div class="form-group">
-
-        <label>E-mail:</label>
-
-        <input
-            type="email"
-            name="email"
-        >
-
-    </div>
-
-    <div class="form-group">
-
-        <label>Telefone:</label>
-
-        <input
-            type="text"
-            name="telefone"
-        >
-
-    </div>
-
-    <button class="btn-cadastrar">
-        Salvar
-    </button>
-
-</form>
-
+    </form>
 </div>

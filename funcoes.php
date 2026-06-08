@@ -1,5 +1,4 @@
 <?php
-// funcoes.php
 
 function obterContatos(
     PDO $pdo,
