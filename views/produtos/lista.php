@@ -5,13 +5,10 @@
 <br><br>
 
 <?php if (empty($produtos)): ?>
-
     <p>Nenhum produto encontrado.</p>
-
 <?php else: ?>
 
 <table>
-
     <thead>
         <tr>
             <th>#</th>
@@ -24,55 +21,37 @@
             <th>Excluir</th>
         </tr>
     </thead>
-
     <tbody>
-
     <?php foreach ($produtos as $produto): ?>
-
         <tr>
-
-            <td><?= htmlspecialchars($produto['id']) ?></td>
-
-            <td>
-                <?php if (!empty($produto['imagem'])): ?>
-                    <img src="uploads/<?= htmlspecialchars($produto['imagem']) ?>" width="50" height="50">
-                <?php else: ?>
-                    Sem Imagem
-                <?php endif; ?>
-            </td>
-
-            <td><?= htmlspecialchars($produto['nome']) ?></td>
-
-            <td><?= htmlspecialchars($produto['descricao']) ?></td>
-
-            <td>R$ <?= number_format($produto['preco'], 2, ',', '.') ?></td>
-
-            <td><?= htmlspecialchars($produto['estoque']) ?></td>
+            <td><?= htmlspecialchars($produto->id) ?></td>
 
             <td>
-                <a
-                    class="btn-editar"
-                    href="index.php?pagina=editar_produto&id=<?= $produto['id'] ?>"
-                >
-                    Editar
-                </a>
+                <?php 
+                $caminhoLocal = "img/produtos/" . $produto->id . ".jpg";
+                if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . $caminhoLocal) || file_exists($caminhoLocal)) {
+                    $urlImagem = $caminhoLocal;
+                } else {
+                    $urlImagem = "https://picsum.photos/id/" . (($produto->id % 50) + 10) . "/50/50"; 
+                }
+                ?>
+                <img src="<?= $urlImagem ?>" alt="Foto de <?= htmlspecialchars($produto->nome) ?>" width="50" height="50" style="object-fit: cover; border-radius: 4px; display: block;">
             </td>
+
+            <td><?= htmlspecialchars($produto->nome) ?></td>
+            <td><?= htmlspecialchars($produto->descricao) ?></td>
+            <td>R$ <?= htmlspecialchars(number_format((float)($produto->preco ?? 0), 2, ',', '.')) ?></td>
+            <td><?= htmlspecialchars($produto->estoque) ?></td>
 
             <td>
-                <a
-                    class="btn-excluir"
-                    href="index.php?pagina=excluir_produto&id=<?= $produto['id'] ?>"
-                >
-                    Excluir
-                </a>
+                <a class="btn-editar" href="index.php?pagina=editar_produto&id=<?= $produto->id ?>">Editar</a>
             </td>
-
+            <td>
+                <a class="btn-excluir" href="index.php?pagina=excluir_produto&id=<?= $produto->id ?>" onclick="return confirm('Tem certeza que deseja excluir este produto?')">Excluir</a>
+            </td>
         </tr>
-
     <?php endforeach; ?>
-
     </tbody>
-
 </table>
 
 <?php endif; ?>

@@ -2,9 +2,12 @@
 
 $pdo = require 'config/database.php';
 
-require_once 'models/ContatoModel.php';
-require_once 'models/clienteModel.php';
-require_once 'models/produtoModel.php';
+require_once 'models/Contato.php'; 
+require_once 'daos/ContatoDAO.php';
+require_once 'models/Cliente.php';
+require_once 'daos/ClienteDAO.php';
+require_once 'models/Produto.php';
+require_once 'daos/ProdutoDAO.php';
 
 $pagina = $_GET['pagina'] ?? 'contatos';
 
@@ -12,8 +15,10 @@ include 'views/cabecalho.php';
 
 switch ($pagina) {
 
+
         case 'clientes':
-            $clientes = ClienteModel::findAll($pdo);
+            $clienteDAO = new ClienteDAO($pdo); 
+            $clientes = $clienteDAO->findAll(); 
             include 'views/clientes/lista.php';
             break;
 
@@ -30,7 +35,8 @@ switch ($pagina) {
             break;
 
         case 'produtos':
-            $produtos = ProdutoModel::findAll($pdo);
+            $produtoDAO = new ProdutoDAO($pdo);
+            $produtos = $produtoDAO->findAll(); 
             include 'views/produtos/lista.php';
             break;
 
@@ -47,24 +53,25 @@ switch ($pagina) {
             break;
 
 
-    case 'cadastro_contato':
-        include 'views/contatos/cadastro_contato.php';
-        break;
+        case 'cadastro_contato':
+            include 'views/contatos/cadastro_contato.php';
+            break;
 
-    case 'editar_contato':
-        include 'views/contatos/editar_contato.php'; 
-        break;
+        case 'editar_contato':
+            include 'views/contatos/editar_contato.php';
+            break;
 
-    case 'excluir_contato':
-        include 'views/contatos/excluir_contato.php'; 
-        break;
+        case 'excluir_contato':
+            include 'views/contatos/excluir_contato.php';
+            break;
 
-    case 'contatos':
-    default:
-        $contatos = ContatoModel::findAll($pdo);
-        include 'views/contatos/lista.php';
-        break;
-}
+        case 'contatos':
+        default:
+            $contatoDAO = new ContatoDAO($pdo); 
+            $contatos = $contatoDAO->findAll(); 
+            include 'views/contatos/lista.php';
+            break;
+        }
 ?>
 
 </div>

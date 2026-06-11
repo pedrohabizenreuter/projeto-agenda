@@ -26,37 +26,18 @@
     <tbody>
 
     <?php foreach ($contatos as $contato): ?>
-
         <tr>
-
-            <td><?= htmlspecialchars($contato['id']) ?></td>
-
-            <td><?= htmlspecialchars($contato['nome']) ?></td>
-
-            <td><?= htmlspecialchars($contato['email']) ?></td>
-
-            <td><?= htmlspecialchars($contato['telefone']) ?></td>
-
+            <td><?= htmlspecialchars($contato->id) ?></td>
+            <td><?= htmlspecialchars($contato->nome) ?></td>
+            <td><?= htmlspecialchars($contato->email) ?></td>
+            <td><?= htmlspecialchars($contato->telefone) ?></td>
             <td>
-                <a
-                    class="btn-editar"
-                    href="index.php?pagina=editar_contato&id=<?= $contato['id'] ?>"
-                >
-                    Editar
-                </a>
+                <a class="btn-editar" href="index.php?pagina=editar_contato&id=<?= $contato->id ?>">Editar</a>
             </td>
-
             <td>
-                <a
-                    class="btn-excluir"
-                    href="index.php?pagina=excluir_contato&id=<?= $contato['id'] ?>"
-                >
-                    Excluir
-                </a>
+                <a class="btn-excluir" href="index.php?pagina=excluir_contato&id=<?= $contato->id ?>">Excluir</a>
             </td>
-
         </tr>
-
     <?php endforeach; ?>
 
     </tbody>

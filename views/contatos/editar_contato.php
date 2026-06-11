@@ -1,14 +1,18 @@
 <?php
+$erro = "";
 $id = $_GET['id'] ?? null;
 
 if (!$id) {
-    die("ID inválido.");
+    echo "<script>window.location.href='index.php?pagina=contatos';</script>";
+    exit;
 }
 
-$contato = ContatoModel::find($pdo, $id);
+$contatoDAO = new ContatoDAO($pdo);
+$contato = $contatoDAO->find((int)$id);
 
 if (!$contato) {
-    die("Contato não encontrado.");
+    echo "<script>window.location.href='index.php?pagina=contatos';</script>";
+    exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -16,32 +20,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email    = trim($_POST['email'] ?? '');
     $telefone = trim($_POST['telefone'] ?? '');
 
-    ContatoModel::update($pdo, $id, [
-        'nome'     => $nome,
-        'email'    => $email,
-        'telefone' => $telefone
-    ]);
+    if (!$nome || !$email || !$telefone) {
+        $erro = "Todos os campos são obrigatórios.";
+    } else {
+        $contato->nome = $nome;
+        $contato->email = $email;
+        $contato->telefone = $telefone;
 
-    header("Location: index.php?pagina=contatos");
-    exit;
+        $contatoDAO->update($contato);
+
+        echo "<script>window.location.href='index.php?pagina=contatos';</script>";
+        exit;
+    }
 }
+
+include 'views/contatos/form.php';
 ?>
-<a href="index.php?pagina=contatos" class="btn-voltar">Voltar</a>
-<div class="form-container">
-    <h2>Editar contato</h2>
-    <form method="POST">
-        <div class="form-group">
-            <label>Nome:</label>
-            <input type="text" name="nome" value="<?= htmlspecialchars($contato['nome']) ?>">
-        </div>
-        <div class="form-group">
-            <label>E-mail:</label>
-            <input type="email" name="email" value="<?= htmlspecialchars($contato['email']) ?>">
-        </div>
-        <div class="form-group">
-            <label>Telefone:</label>
-            <input type="text" name="telefone" value="<?= htmlspecialchars($contato['telefone']) ?>">
-        </div>
-        <button class="btn-cadastrar" type="submit">Salvar</button>
-    </form>
-</div>

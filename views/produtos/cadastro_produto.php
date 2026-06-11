@@ -1,49 +1,38 @@
 <?php
 $erro = "";
+$produto = null; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome      = trim($_POST['nome'] ?? '');
     $descricao = trim($_POST['descricao'] ?? '');
-    $preco     = floatval($_POST['preco'] ?? 0);
-    $estoque   = intval($_POST['estoque'] ?? 0);
-    $nomeArquivo = null;
+    $preco     = trim($_POST['preco'] ?? '');
+    $estoque   = trim($_POST['estoque'] ?? '');
 
-    if ($preco <= 0) {
-        $erro = "Preço inválido.";
-    } elseif ($estoque < 0) {
-        $erro = "Estoque inválido.";
+    if (!$nome) {
+        $erro = "O campo Nome do Produto é obrigatório.";
+    } elseif (!$preco) {
+        $erro = "O campo Preço é obrigatório.";
+    } elseif ($estoque === '') {
+        $erro = "O campo Estoque é obrigatório.";
     } else {
-        if (!empty($_FILES['imagem']['name'])) {
-            $extensao = pathinfo($_FILES['imagem']['name'], PATHINFO_EXTENSION);
-            $permitidos = ['jpg', 'jpeg', 'png', 'webp'];
+        $produtoDAO = new ProdutoDAO($pdo);
+        $novoProduto = new Produto(null, $nome, $descricao, $preco, (int)$estoque);
+        
+        $produtoDAO->create($novoProduto);
+        
+        $novoId = $pdo->lastInsertId();
 
-            if (!in_array(strtolower($extensao), $permitidos)) {
-                $erro = "Tipo de imagem não permitido.";
-            } else {
-                $mime = mime_content_type($_FILES['imagem']['tmp_name']);
-                $mimesPermitidos = ['image/jpeg', 'image/png', 'image/webp'];
-
-                if (!in_array($mime, $mimesPermitidos)) {
-                    $erro = "Arquivo inválido.";
-                } else {
-                    $nomeArquivo = uniqid('prod_') . '.' . $extensao;
-                    move_uploaded_file($_FILES['imagem']['tmp_name'], 'uploads/' . $nomeArquivo);
-                }
+        if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+            if (!is_dir('img/produtos')) {
+                mkdir('img/produtos', 0777, true);
             }
+            
+            $destino = "img/produtos/" . $novoId . ".jpg";
+            move_uploaded_file($_FILES['foto']['tmp_name'], $destino);
         }
 
-        if (!$erro) {
-            ProdutoModel::create($pdo, [
-                'nome' => $nome,
-                'descricao' => $descricao,
-                'preco' => $preco,
-                'estoque' => $estoque,
-                'imagem' => $nomeArquivo
-            ]);
-
-            header("Location: index.php?pagina=produtos");
-            exit;
-        }
+        echo "<script>window.location.href='index.php?pagina=produtos';</script>";
+        exit;
     }
 }
 

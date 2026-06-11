@@ -1,23 +1,20 @@
 <?php
 $erro = "";
+$contato = null; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome     = trim($_POST['nome'] ?? '');
     $email    = trim($_POST['email'] ?? '');
     $telefone = trim($_POST['telefone'] ?? '');
 
-    if (!$nome) {
-        $erro = "O campo Nome é obrigatório.";
-    } elseif (!$email) {
-        $erro = "O campo E-mail é obrigatório.";
+    if (!$nome || !$email || !$telefone) {
+        $erro = "Todos os campos são obrigatórios.";
     } else {
-        ContatoModel::create($pdo, [
-            'nome'     => $nome,
-            'email'    => $email,
-            'telefone' => $telefone
-        ]);
+        $contatoDAO = new ContatoDAO($pdo);
+        $novoContato = new Contato(null, $nome, $email, $telefone);
+        $contatoDAO->create($novoContato);
 
-        header("Location: index.php?pagina=contatos");
+        echo "<script>window.location.href='index.php?pagina=contatos';</script>";
         exit;
     }
 }

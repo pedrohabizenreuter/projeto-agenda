@@ -2,33 +2,21 @@
 $erro = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome     = trim($_POST['nome'] ?? '');
-    $cpf      = trim($_POST['cpf'] ?? '');
-    $email    = trim($_POST['email'] ?? '');
-    $telefone = trim($_POST['telefone'] ?? '');
-    $endereco = trim($_POST['endereco'] ?? '');
+    $nome  = trim($_POST['nome'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $cpf   = trim($_POST['cpf'] ?? '');
 
-    if (!$nome) {
-        $erro = "O campo Nome é obrigatório.";
-    } elseif (!$email) {
-        $erro = "O campo E-mail é obrigatório.";
-    } elseif (strlen($cpf) != 14) {
-        $erro = "CPF inválido. Utilize o formato 000.000.000-00.";
+    if (!$nome || !$email || !$cpf) {
+        $erro = "Todos os campos são obrigatórios.";
     } else {
-        
-        ClienteModel::create($pdo, [
-            'nome' => $nome,
-            'cpf' => $cpf,
-            'email' => $email,
-            'telefone' => $telefone,
-            'endereco' => $endereco
-        ]);
+        $clienteDAO = new ClienteDAO($pdo);
+        $novoCliente = new Cliente(null, $nome, $email, $cpf);
+        $clienteDAO->create($novoCliente);
 
-        header("Location: index.php?pagina=clientes");
+        echo "<script>window.location.href='index.php?pagina=clientes';</script>";
         exit;
     }
 }
-
 
 include 'views/clientes/form.php';
 ?>

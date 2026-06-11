@@ -1,50 +1,27 @@
-<a href="index.php?pagina=clientes" class="btn-voltar">
-    Voltar
-</a>
-
 <div class="form-container">
+    <h2>Formulário de Cliente</h2>
 
-<h2>Cadastrar Cliente</h2>
+    <?php if (!empty($erro)): ?>
+        <p class="erro"><?= htmlspecialchars($erro) ?></p>
+    <?php endif; ?>
 
-<?php if (!empty($erro)): ?>
-    <p class="erro"><?= $erro ?></p>
-<?php endif; ?>
+    <form method="POST" action="">
+        <div class="form-group">
+            <label for="nome">Nome:</label>
+            <input type="text" name="nome" id="nome" value="<?= htmlspecialchars(is_object($cliente) ? $cliente->nome : ($cliente['nome'] ?? '')) ?>" required>
+        </div>
 
-<form method="POST">
+        <div class="form-group">
+            <label for="email">E-mail:</label>
+            <input type="email" name="email" id="email" value="<?= htmlspecialchars(is_object($cliente) ? $cliente->email : ($cliente['email'] ?? '')) ?>" required>
+        </div>
 
-    <div class="form-group">
-        <label>Nome:</label>
-        <input type="text" name="nome">
-    </div>
+        <div class="form-group">
+            <label for="cpf">CPF:</label>
+            <input type="text" name="cpf" id="cpf" value="<?= htmlspecialchars(is_object($cliente) ? $cliente->cpf : ($cliente['cpf'] ?? '')) ?>" required>
+        </div>
 
-    <div class="form-group">
-        <label>CPF:</label>
-        <input
-            type="text"
-            name="cpf"
-            placeholder="000.000.000-00"
-        >
-    </div>
-
-    <div class="form-group">
-        <label>E-mail:</label>
-        <input type="email" name="email">
-    </div>
-
-    <div class="form-group">
-        <label>Telefone:</label>
-        <input type="text" name="telefone">
-    </div>
-
-    <div class="form-group">
-        <label>Endereço:</label>
-        <input type="text" name="endereco">
-    </div>
-
-    <button class="btn-cadastrar">
-        Cadastrar
-    </button>
-
-</form>
-
+        <button type="submit" class="btn-cadastrar">Salvar Cliente</button>
+        <a href="index.php?pagina=clientes" class="btn-voltar">Cancelar</a>
+    </form>
 </div>

@@ -1,10 +1,19 @@
 <?php
+if (ob_get_level()) ob_clean();
+
 $id = $_GET['id'] ?? null;
 
 if ($id) {
-    ProdutoModel::delete($pdo, $id);
+    $produtoDAO = new ProdutoDAO($pdo);
+    
+    $foto = "img/produtos/" . (int)$id . ".jpg";
+    if (file_exists($foto)) {
+        unlink($foto);
+    }
+    
+    $produtoDAO->delete((int)$id);
 }
 
-header("Location: index.php?pagina=produtos");
+echo "<script>window.location.href='index.php?pagina=produtos';</script>";
 exit;
 ?>
