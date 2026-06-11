@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (strlen($cpf) != 14) {
         $erro = "CPF inválido. Utilize o formato 000.000.000-00.";
     } else {
-        // Adaptado para usar o seu ClienteModel real
+        
         ClienteModel::create($pdo, [
             'nome' => $nome,
             'cpf' => $cpf,
@@ -29,6 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Renderiza o formulário visual
+
 include 'views/clientes/form.php';
 ?>
